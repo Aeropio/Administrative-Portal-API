@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # return authenticated token upon signup
   	include CommonLib::ApiHelper
 
-   skip_before_action :authorize_request, only: :create
+   skip_before_action :authorize_request, only: [:create, :disable_user_from_login]
 
 # Provide the ability to create a new user.
   def create
@@ -125,6 +125,24 @@ class UsersController < ApplicationController
       #send the response back to the user
     send_response(@api_response, @errors)
 
+  end
+
+  #• Provide the ability to disable a user.
+  def disable_user_from_login
+    user = User.where(id: user_params[:id]).first
+    response = ""
+    if user.present?
+      response = user.update(disable: true);
+    else
+      response = "No User Found"
+    end
+    @api_response[:code] = @response_codes[:success]
+    @api_response[:result] = response
+    rescue Exception => e
+        @errors, @api_response = api_exception_handler(e)
+    ensure
+      #send the response back to the user
+    send_response(@api_response, @errors)
   end
 
   private

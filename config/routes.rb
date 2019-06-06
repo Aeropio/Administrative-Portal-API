@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get  'sort', to: 'users#sort_on_a_field'
   get  'filter', to: 'users#filter_on_fields'
   post  'user/tags', to: 'users#user_tags'
+  post  'user/disable', to: 'users#disable_user_from_login'
 
 
 end
